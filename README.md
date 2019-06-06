@@ -6,6 +6,7 @@ A React Native library for accessing TensorFlow Lite API. Supports Classificatio
 ## Installation
 
 ~~`$ npm install tflite-react-native --save`~~
+`"tflite-react-native": "handled/tflite-react-native"`
 
 Because this is a fork, we'll have to import directly from a github source in the package.json
 
