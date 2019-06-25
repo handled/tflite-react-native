@@ -78,7 +78,7 @@ RCT_EXPORT_METHOD(loadModel:(NSString *)model_file
     interpreter->SetNumThreads(num_threads);
   }
   
-  callback(@[[NSNull null], @"sucess"]);
+  callback(@[[NSNull null], @"success"]);
 }
 
 void feedInputTensorImage(const NSString* image_path, float input_mean, float input_std, int* input_size) {
