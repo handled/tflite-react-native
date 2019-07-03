@@ -51,9 +51,22 @@ RCT_EXPORT_METHOD(loadModel:(NSString *)model_file
                   numThreads:(int)num_threads
                   callback:(RCTResponseSenderBlock)callback)
 {
-  NSString* graph_path = [[NSBundle mainBundle] pathForResource:model_file ofType:nil];
-  model = tflite::FlatBufferModel::BuildFromFile([graph_path UTF8String]);
-  LOG(INFO) << "Loaded model " << graph_path;
+  /*
+
+  We need to use the fully qualified full paths for model and label files passed into this method 
+  because it will be dynamically added to the Downloads directory via rn-fetch-blob.
+
+  We will probably want to revisit this approach to use NSBundle methods to generate the URLs
+
+  */
+  // NSString* graph_path = [[NSBundle mainBundle] pathForResource:model_file ofType:nil];
+  // model = tflite::FlatBufferModel::BuildFromFile([graph_path UTF8String]);
+
+  model = tflite::FlatBufferModel::BuildFromFile([model_file UTF8String]);
+
+  // LOG(INFO) << "Loaded model " << graph_path;
+  LOG(INFO) << "Loaded model " << model_file;
+
   model->error_reporter();
   LOG(INFO) << "resolved reporter";
   
@@ -61,8 +74,10 @@ RCT_EXPORT_METHOD(loadModel:(NSString *)model_file
     callback(@[[NSString stringWithFormat:@"%s %@", "Failed to mmap model", model_file]]);
   }
   
-  NSString* labels_path = [[NSBundle mainBundle] pathForResource:labels_file ofType:nil];
-  LoadLabels(labels_path, &labels);
+  // NSString* labels_path = [[NSBundle mainBundle] pathForResource:labels_file ofType:nil];
+  // LoadLabels(labels_path, &labels);
+
+  LoadLabels(labels_file, &labels);
   
   tflite::ops::builtin::BuiltinOpResolver resolver;
   tflite::InterpreterBuilder(*model, resolver)(&interpreter);
